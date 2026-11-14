@@ -63,6 +63,23 @@ const cesky = {
   paginate: { first: 'První', previous: 'Předchozí', next: 'Další', last: 'Poslední' }
 };
 
+const siluety = {
+  hatch: ['M30 80 L30 62 Q32 52 48 50 L85 46 Q105 24 135 24 L180 24 Q205 26 222 48 L262 54 Q274 58 274 80 Z', 'M92 46 Q108 29 135 29 L178 29 Q196 31 208 46 Z'],
+  suv: ['M26 82 L26 52 Q28 44 44 42 L70 40 L85 24 L200 24 Q215 26 228 42 L262 48 Q276 52 276 82 Z', 'M90 40 L98 29 L198 29 Q208 31 216 40 Z'],
+  sport: ['M22 80 L22 66 Q26 58 48 56 L110 50 Q140 30 175 32 Q205 34 225 52 L270 60 Q282 64 282 80 Z', 'M118 49 Q142 35 172 37 Q196 39 212 50 Z'],
+  sedan: ['M24 80 L24 62 Q26 54 44 52 L92 48 Q112 28 142 28 L186 28 Q214 30 230 50 L266 56 Q278 60 278 80 Z', 'M100 47 Q116 32 142 32 L184 32 Q206 34 218 48 Z'],
+  van: ['M26 82 L26 30 Q26 24 34 24 L190 24 Q206 24 216 40 L250 50 Q272 54 274 70 L274 82 Z', 'M190 30 L204 30 Q212 34 220 44 L190 44 Z']
+};
+const druhSiluety = { 'Ekonomická': 'hatch', 'Kompakt': 'hatch', 'Elektro': 'hatch', 'SUV': 'suv', 'Sport': 'sport', 'Prémiová': 'sedan', 'Užitkový': 'van' };
+
+function obrazekAuta(a) {
+  const s = siluety[druhSiluety[a.kategorie]] || siluety.hatch;
+  return '<svg viewBox="0 0 300 110" class="w-100 mb-3" role="img" aria-label="Ilustrace vozu ' + nazevAuta(a) + '">' +
+    '<path d="' + s[0] + '" fill="#e10600"/><path d="' + s[1] + '" fill="#10151c"/>' +
+    '<g fill="#111" stroke="#999" stroke-width="3"><circle cx="82" cy="84" r="16"/><circle cx="222" cy="84" r="16"/></g>' +
+    '<rect x="14" y="100" width="272" height="2" fill="#333"/></svg>';
+}
+
 function nazevAuta(a) { return a.znacka + ' ' + a.model; }
 
 function tabulkaVozu() {
@@ -85,6 +102,7 @@ function tabulkaVozu() {
     const a = auta[i];
     $('#detailNazev').text(nazevAuta(a));
     $('#detailTelo').html(
+      obrazekAuta(a) +
       '<dl class="row mb-3">' +
       '<dt class="col-5">Rok výroby</dt><dd class="col-7">' + a.rok + '</dd>' +
       '<dt class="col-5">Palivo</dt><dd class="col-7">' + a.palivo + '</dd>' +
