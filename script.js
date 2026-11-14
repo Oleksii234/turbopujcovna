@@ -50,7 +50,8 @@ Ford;Mustang GT;2021;Benzín;Automatická;330;3790;Sport
 Porsche;911 Carrera;2022;Benzín;Automatická;283;7990;Sport
 Porsche;Macan;2022;Benzín;Automatická;195;4290;SUV
 Tesla;Model 3;2023;Elektro;Automatická;208;2490;Elektro
-Tesla;Model Y;2023;Elektro;Automatická;220;2790;Elektro`.split('\n').map(function (radek) {
+Tesla;Model Y;2023;Elektro;Automatická;220;2790;Elektro
+Bugatti;Chiron;2022;Benzín;Automatická;1103;24900;Sport`.split('\n').map(function (radek) {
   const p = radek.split(';');
   return { znacka: p[0], model: p[1], rok: +p[2], palivo: p[3], prevodovka: p[4], vykon: +p[5], cena: +p[6], kategorie: p[7] };
 });
@@ -269,8 +270,8 @@ function scena3D() {
 
   let animace = function (p) {
     auto.rotation.y = -0.5 + p * Math.PI * 1.2;
-    dvere.forEach(function (d) { d.pant.rotation.y = d.s * 1.0 * usek(p, 0.2, 0.55); });
-    kufr.rotation.z = -1.0 * usek(p, 0.55, 0.85);
+    dvere.forEach(function (d) { d.pant.rotation.y = d.s * 1.0 * usek(p, 0.05, 0.4); });
+    kufr.rotation.z = -1.0 * usek(p, 0.05, 0.4);
   };
   let zmenaBarvy = function (b) {
     karoserie.color.copy(b);
@@ -325,9 +326,9 @@ function scena3D() {
       scena.add(auto);
       animace = function (p) {
         auto.rotation.y = -0.5 + p * Math.PI * 1.2;
-        levaDvere.rotation.y = -1.05 * usek(p, 0.2, 0.55);
-        praveDvere.rotation.y = 1.05 * usek(p, 0.2, 0.55);
-        kapota.rotation.x = -0.8 * usek(p, 0.55, 0.85);
+        levaDvere.rotation.y = -1.05 * usek(p, 0.05, 0.4);
+        praveDvere.rotation.y = 1.05 * usek(p, 0.05, 0.4);
+        kapota.rotation.x = -0.8 * usek(p, 0.05, 0.4);
       };
       zmenaBarvy = function (b) {
         laky.forEach(function (m) { m.color.copy(b); });
