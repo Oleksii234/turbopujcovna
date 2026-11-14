@@ -64,20 +64,28 @@ const cesky = {
 };
 
 const siluety = {
-  hatch: ['M30 80 L30 62 Q32 52 48 50 L85 46 Q105 24 135 24 L180 24 Q205 26 222 48 L262 54 Q274 58 274 80 Z', 'M92 46 Q108 29 135 29 L178 29 Q196 31 208 46 Z'],
-  suv: ['M26 82 L26 52 Q28 44 44 42 L70 40 L85 24 L200 24 Q215 26 228 42 L262 48 Q276 52 276 82 Z', 'M90 40 L98 29 L198 29 Q208 31 216 40 Z'],
-  sport: ['M22 80 L22 66 Q26 58 48 56 L110 50 Q140 30 175 32 Q205 34 225 52 L270 60 Q282 64 282 80 Z', 'M118 49 Q142 35 172 37 Q196 39 212 50 Z'],
-  sedan: ['M24 80 L24 62 Q26 54 44 52 L92 48 Q112 28 142 28 L186 28 Q214 30 230 50 L266 56 Q278 60 278 80 Z', 'M100 47 Q116 32 142 32 L184 32 Q206 34 218 48 Z'],
-  van: ['M26 82 L26 30 Q26 24 34 24 L190 24 Q206 24 216 40 L250 50 Q272 54 274 70 L274 82 Z', 'M190 30 L204 30 Q212 34 220 44 L190 44 Z']
+  hatch: { telo: 'M30 82 L30 62 Q30 56 38 55 L76 52 L96 34 Q100 30 108 30 L176 30 Q186 30 192 36 L214 54 L260 58 Q272 60 272 70 L272 82 Z', okna: ['M97 37 L103 34 L137 34 L137 52 L82 52 Z', 'M143 34 L176 34 Q182 34 187 38 L205 52 L143 52 Z'], dvere: [[140, 34, 80]], klika: [150, 60], svetla: [60, 62] },
+  suv: { telo: 'M28 84 L28 52 Q28 46 36 45 L70 44 L80 28 Q82 26 88 26 L190 26 Q198 26 202 31 L222 46 L262 50 Q274 52 274 62 L274 84 Z', okna: ['M85 30 L134 30 L134 45 L75 45 Z', 'M140 30 L188 30 Q192 30 195 33 L212 45 L140 45 Z'], dvere: [[137, 45, 80]], klika: [148, 56], svetla: [52, 52] },
+  sport: { telo: 'M24 82 L24 68 Q26 62 36 61 L80 58 L112 40 Q118 36 126 36 L168 36 Q178 36 186 42 L214 58 L264 64 Q278 66 278 74 L278 82 Z', okna: ['M110 56 L124 41 L166 41 Q174 41 180 45 L200 56 Z'], dvere: [[108, 56, 80]], klika: [165, 64], svetla: [66, 68] },
+  sedan: { telo: 'M26 82 L26 64 Q26 58 36 57 L74 55 L96 38 Q101 34 110 34 L170 34 Q180 34 187 40 L206 55 L262 59 Q274 61 274 70 L274 82 Z', okna: ['M99 40 L104 37 L134 37 L134 54 L84 54 Z', 'M140 37 L172 37 Q178 37 183 41 L198 54 L140 54 Z'], dvere: [[137, 54, 80]], klika: [148, 62], svetla: [60, 62] },
+  van: { telo: 'M26 84 L26 24 Q26 20 32 20 L196 20 Q206 20 212 28 L238 50 L264 54 Q276 56 276 66 L276 84 Z', okna: ['M34 26 L64 26 L64 42 L34 42 Z', 'M203 26 L208 26 L230 48 L203 48 Z'], dvere: [[100, 20, 80], [160, 20, 80]], klika: [130, 52], svetla: [56, 56] }
 };
 const druhSiluety = { 'Ekonomická': 'hatch', 'Kompakt': 'hatch', 'Elektro': 'hatch', 'SUV': 'suv', 'Sport': 'sport', 'Prémiová': 'sedan', 'Užitkový': 'van' };
 
 function obrazekAuta(a) {
   const s = siluety[druhSiluety[a.kategorie]] || siluety.hatch;
-  return '<svg viewBox="0 0 300 110" class="w-100 mb-3" role="img" aria-label="Ilustrace vozu ' + nazevAuta(a) + '">' +
-    '<path d="' + s[0] + '" fill="#e10600"/><path d="' + s[1] + '" fill="#10151c"/>' +
-    '<g fill="#111" stroke="#999" stroke-width="3"><circle cx="82" cy="84" r="16"/><circle cx="222" cy="84" r="16"/></g>' +
-    '<rect x="14" y="100" width="272" height="2" fill="#333"/></svg>';
+  const caru = '#8a0000';
+  function kolo(x) {
+    return '<circle cx="' + x + '" cy="81" r="21" fill="#212529"/><circle cx="' + x + '" cy="81" r="16" fill="#111"/><circle cx="' + x + '" cy="81" r="8" fill="#c8c8c8"/><circle cx="' + x + '" cy="81" r="3" fill="#666"/>';
+  }
+  let svg = '<svg viewBox="0 0 300 110" class="w-100 mb-3" role="img" aria-label="Ilustrace vozu ' + nazevAuta(a) + '">';
+  svg += '<path d="' + s.telo + '" fill="#e10600" stroke="' + caru + '" stroke-width="1.5" stroke-linejoin="round"/>';
+  s.okna.forEach(function (o) { svg += '<path d="' + o + '" fill="#bcd7ee" stroke="' + caru + '" stroke-width="1.5"/>'; });
+  s.dvere.forEach(function (d) { svg += '<line x1="' + d[0] + '" y1="' + d[1] + '" x2="' + d[0] + '" y2="' + d[2] + '" stroke="' + caru + '" stroke-width="1.5"/>'; });
+  svg += '<line x1="' + s.klika[0] + '" y1="' + s.klika[1] + '" x2="' + (s.klika[0] + 12) + '" y2="' + s.klika[1] + '" stroke="' + caru + '" stroke-width="3" stroke-linecap="round"/>';
+  svg += '<rect x="264" y="' + s.svetla[0] + '" width="10" height="6" rx="2" fill="#ffe9a0"/><rect x="25" y="' + s.svetla[1] + '" width="5" height="7" rx="2" fill="#5a0000"/>';
+  svg += kolo(80) + kolo(222) + '<rect x="14" y="99" width="272" height="2" fill="#444"/></svg>';
+  return svg;
 }
 
 function nazevAuta(a) { return a.znacka + ' ' + a.model; }
