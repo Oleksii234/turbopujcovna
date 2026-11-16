@@ -105,6 +105,14 @@ function tabulkaVozu() {
     ]
   });
   const okno = new bootstrap.Modal('#modalDetail');
+  const kategorie = ['Vše'].concat(auta.map(function (a) { return a.kategorie; }).filter(function (k, i, p) { return p.indexOf(k) === i; }));
+  kategorie.forEach(function (k, i) {
+    $('<button type="button" class="btn btn-sm btn-outline-danger"></button>').text(k).toggleClass('active', i === 0).on('click', function () {
+      $('#filtr .btn').removeClass('active');
+      $(this).addClass('active');
+      tabulka.column(7).search(k === 'Vše' ? '' : '^' + k + '$', true, false).draw();
+    }).appendTo('#filtr');
+  });
   $('#tabulka').on('click', '.btn-detail', function () {
     const i = $(this).data('i');
     const a = auta[i];
@@ -136,6 +144,29 @@ function formularRezervace() {
   f.datumOd.min = dnes;
   f.datumDo.min = dnes;
   $('#datumOd, #datumDo').on('input', function () { f.datumDo.setCustomValidity(''); });
+
+  function spocitatCenu() {
+    const souhrn = $('#souhrn');
+    const od = f.datumOd.value, doData = f.datumDo.value;
+    if (f.vozidlo.value === '' || !od || !doData || doData < od) {
+      souhrn.html('<span class="text-secondary"><i class="bi bi-calculator"></i> Vyberte vozidlo a termín – zobrazí se předběžná cena.</span>');
+      return;
+    }
+    const auto = auta[f.vozidlo.value];
+    const dny = Math.max(1, Math.round((new Date(doData) - new Date(od)) / 86400000));
+    const sleva = dny >= 7 ? 0.15 : dny >= 3 ? 0.07 : 0;
+    const zaAuto = Math.round(auto.cena * dny * (1 - sleva));
+    const pojisteni = f.pojisteni.value === 'plne' ? 250 : f.pojisteni.value === 'premium' ? 450 : 0;
+    const doplnky = (f.gps.checked ? 100 : 0) + (f.sedacka.checked ? 80 : 0) + (f.ridic.checked ? 150 : 0);
+    const celkem = zaAuto + (pojisteni + doplnky) * dny;
+    const kc = function (c) { return c.toLocaleString('cs-CZ') + ' Kč'; };
+    souhrn.html('<div class="row align-items-center"><div class="col-md-8 small text-secondary">' +
+      nazevAuta(auto) + ': ' + dny + ' dní × ' + kc(auto.cena) + (sleva ? ' (sleva ' + Math.round(sleva * 100) + ' %)' : '') + ' = ' + kc(zaAuto) +
+      '<br>Pojištění a doplňky: ' + kc((pojisteni + doplnky) * dny) + '</div>' +
+      '<div class="col-md-4 text-md-end"><span class="text-secondary small">Předběžná cena</span><div class="cena-velka">' + kc(celkem) + '</div></div></div>');
+  }
+  $(f).on('input change', spocitatCenu);
+  spocitatCenu();
   f.addEventListener('submit', function (e) {
     e.preventDefault();
     f.datumDo.setCustomValidity(f.datumOd.value && f.datumDo.value && f.datumDo.value < f.datumOd.value ? 'Datum do musí být po datu od.' : '');
@@ -144,6 +175,7 @@ function formularRezervace() {
     const jmeno = f.jmeno.value;
     f.reset();
     f.classList.remove('was-validated');
+    spocitatCenu();
     $('#uspech').removeClass('d-none').find('span').text(jmeno + ', vaše rezervace byla odeslána. Brzy se vám ozveme.');
     document.getElementById('uspech').scrollIntoView({ behavior: 'smooth' });
   });
@@ -304,7 +336,10 @@ function scena3D() {
     podsvetleni.color.copy(b);
   };
 
-  if (typeof THREE.GLTFLoader !== 'undefined') {
+  if (typeof THREE.GLTFLoader === 'undefined') {
+    $('#nacitani').remove();
+  } else {
+    auto.visible = false;
     new THREE.GLTFLoader().load('models/chiron.glb', function (gltf) {
       const model = gltf.scene;
       const koren = new THREE.Group();
@@ -360,8 +395,16 @@ function scena3D() {
         laky.forEach(function (m) { m.color.copy(b); });
         podsvetleni.color.copy(b);
       };
+      $('#nacitani').remove();
       pozadat();
-    }, undefined, function () { console.warn('Model se nepodařilo načíst, zobrazuje se jednoduché auto.'); });
+    }, function (e) {
+      if (e.lengthComputable) $('#nacitaniText').text('Načítám 3D model… ' + Math.round(e.loaded / e.total * 100) + ' %');
+    }, function () {
+      $('#nacitani').remove();
+      auto.visible = true;
+      pozadat();
+      console.warn('Model se nepodařilo načíst, zobrazuje se jednoduché auto.');
+    });
   }
 
   let ceka = false;
