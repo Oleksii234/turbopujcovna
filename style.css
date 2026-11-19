@@ -56,6 +56,8 @@ a{color:var(--cervena)}a:hover{color:#ff4d47}
 /* mapa-zástupka na stránce kontakt */
 .mapa{min-height:340px;border:1px solid #262626;border-radius:.5rem;background:repeating-linear-gradient(0deg,#111 0 39px,#1b1b1b 39px 40px),repeating-linear-gradient(90deg,#111 0 39px,#1b1b1b 39px 40px);display:flex;align-items:center;justify-content:center;text-align:center}
 .mapa i{font-size:3rem;color:var(--cervena)}
+/* viditelný focus pro ovládání klávesnicí */
+a:focus-visible,button:focus-visible,.form-control:focus-visible,.form-select:focus-visible{outline:2px solid var(--cervena);outline-offset:2px}
 /* karty vozů pro mobil (místo tabulky) */
 #karty,#razeni{display:none}
 .karta-vozu{background:#141414;border:1px solid #262626;border-radius:.75rem;padding:1rem;margin-bottom:.75rem}
