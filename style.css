@@ -56,6 +56,14 @@ a{color:var(--cervena)}a:hover{color:#ff4d47}
 /* mapa-zástupka na stránce kontakt */
 .mapa{min-height:340px;border:1px solid #262626;border-radius:.5rem;background:repeating-linear-gradient(0deg,#111 0 39px,#1b1b1b 39px 40px),repeating-linear-gradient(90deg,#111 0 39px,#1b1b1b 39px 40px);display:flex;align-items:center;justify-content:center;text-align:center}
 .mapa i{font-size:3rem;color:var(--cervena)}
+/* karty vozů pro mobil (místo tabulky) */
+#karty,#razeni{display:none}
+.karta-vozu{background:#141414;border:1px solid #262626;border-radius:.75rem;padding:1rem;margin-bottom:.75rem}
+.karta-vozu h3{font-size:1.15rem;margin:0}
+.karta-vozu .cena-karta{color:var(--cervena);font-weight:700;font-size:1.2rem;white-space:nowrap}
+.karta-vozu .parametry{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0}
+.karta-vozu .parametry span{background:#1f1f1f;border-radius:2rem;padding:.2rem .6rem;font-size:.85rem}
+@media(max-width:767px){#karty,#razeni{display:block}main .table-responsive{display:none}}
 /* mobil a omezený pohyb */
 @media(max-width:767px){.scena-vnejsi{height:250vh}.slide{min-height:60vh}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.karta:hover{transform:none}}

@@ -117,7 +117,24 @@ function tabulkaVozu() {
       tabulka.column(7).search(k === 'Vše' ? '' : '^' + k + '$', true, false).draw();
     }).appendTo('#filtr');
   });
-  $('#tabulka').on('click', '.btn-detail', function () {
+  // mobilní zobrazení: místo tabulky karty vozů + řazení
+  $('#filtr').after('<select id="razeni" class="form-select mb-3" aria-label="Řazení"><option value="0|asc">Řadit: značka A–Z</option><option value="6|asc">Cena: od nejlevnějších</option><option value="6|desc">Cena: od nejdražších</option><option value="5|desc">Výkon: nejsilnější</option><option value="2|desc">Rok: nejnovější</option></select><div id="karty"></div>');
+  $('#razeni').on('change', function () {
+    const p = this.value.split('|');
+    tabulka.order([parseInt(p[0]), p[1]]).draw();
+  });
+  function vykreslitKarty() {
+    const html = tabulka.rows({ page: 'current' }).indexes().toArray().map(function (i) {
+      const a = auta[i];
+      return '<div class="karta-vozu"><div class="d-flex justify-content-between align-items-start gap-2"><h3>' + nazevAuta(a) + '</h3><div class="cena-karta">' + a.cena.toLocaleString('cs-CZ') + ' Kč<small class="text-secondary fs-6 fw-normal"> /den</small></div></div>' +
+        '<div class="parametry"><span>' + a.rok + '</span><span>' + a.palivo + '</span><span>' + a.prevodovka + '</span><span>' + a.vykon + ' kW</span><span>' + a.kategorie + '</span></div>' +
+        '<button class="btn btn-outline-danger w-100 btn-detail" data-i="' + i + '"><i class="bi bi-search"></i> Detail</button></div>';
+    }).join('');
+    $('#karty').html(html || '<p class="text-secondary">Nic nenalezeno.</p>');
+  }
+  tabulka.on('draw', vykreslitKarty);
+  vykreslitKarty();
+  $('#tabulka, #karty').on('click', '.btn-detail', function () {
     const i = $(this).data('i');
     const a = auta[i];
     $('#detailNazev').text(nazevAuta(a));
