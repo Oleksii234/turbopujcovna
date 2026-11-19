@@ -25,7 +25,7 @@
 </g>
 <g fill="#e10600" stroke="#e10600"><rect x="30" y="1100" width="120" height="6"/></g>
 <g stroke="#fff" stroke-width="2" fill="none"><rect x="110" y="900" width="180" height="40"/><rect x="150" y="866" width="100" height="34"/><circle cx="145" cy="946" r="16"/><circle cx="255" cy="946" r="16"/><path d="M140 880 L116 850" stroke="#e10600"/><path d="M260 880 L290 850" stroke="#e10600"/></g>
-<g fill="#fff"><text x="90" y="810" font-weight="bold">Sticky 3D scéna (Three.js)</text><text x="70" y="1070">vůz se otáčí, dveře a kufr se otevírají</text><text x="70" y="1090">podle scrollu (ukazatel průběhu níže)</text></g>
+<g fill="#fff"><text x="90" y="810" font-weight="bold">Sticky 3D scéna (Three.js)</text><text x="70" y="1020">vůz se otáčí, dveře a kapota se otevírají</text><text x="70" y="1038">podle scrollu (ukazatel průběhu níže)</text><g stroke="#fff" stroke-width="1.5"><circle cx="130" cy="1068" r="9" fill="#e10600"/><circle cx="165" cy="1068" r="9" fill="#f2f2f2"/><circle cx="200" cy="1068" r="9" fill="#1e5bff"/><circle cx="235" cy="1068" r="9" fill="#ffb400"/><circle cx="270" cy="1068" r="9" fill="#1a1a1a"/></g></g>
 <text x="124" y="1179" font-weight="bold" fill="#222">Prohlédnout vozy</text>
 <g fill="#222"><text x="44" y="1246" font-weight="bold">TURBO PUJCOVNA</text><text x="44" y="1270">Odkazy: Vozový park | Ceník | Rezervace</text><text x="44" y="1294">Kontakt: Stodolní 12, Ostrava</text><text x="44" y="1318">+420 555 123 456 | info@turbopujcovna.cz</text><text x="44" y="1342">Sociální sítě: f  ig  yt</text><text x="44" y="1390" font-size="11">© 2026 TurboPujcovna</text></g>
 <g font-size="12" fill="#e10600" font-weight="bold">
@@ -42,4 +42,6 @@
 <text x="430" y="940">Sticky sekce Three.js,</text><text x="430" y="958">posun scrollem = animace</text>
 <text x="430" y="1171">Výzva k akci (CTA)</text>
 <text x="430" y="1306">Footer: odkazy, kontakt, sítě</text></g>
+<g><circle cx="410" cy="1068" r="12" fill="#e10600"/><text x="405" y="1073" font-size="12" font-weight="bold" fill="#fff">7</text></g><text x="430" y="1064" fill="#222">Tlačítka pro změnu barvy</text><text x="430" y="1082" fill="#222">karoserie (5 barev)</text>
+<g><circle cx="410" cy="830" r="12" fill="#e10600"/><text x="405" y="835" font-size="12" font-weight="bold" fill="#fff">8</text></g><text x="430" y="826" fill="#222">Během načítání modelu:</text><text x="430" y="844" fill="#222">„Načítám 3D model…“ + procenta</text>
 </svg>

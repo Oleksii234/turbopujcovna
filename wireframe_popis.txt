@@ -23,6 +23,11 @@ Struktura (shora dolů):
    sportovní kupé otáčí a postupně se otevírají dveře i kufr. Dole
    ukazatel průběhu. Při "prefers-reduced-motion" je zobrazena statická
    poloha bez animace.
+   Auto je 3D model Bugatti Chiron. Dveře a kapota se otevírají
+   společně na začátku scrollu. Během načítání modelu se zobrazí
+   indikátor "Načítám 3D model…" s procenty. Nad ukazatelem průběhu je
+   řada 5 barevných tlačítek (červená, bílá, modrá, žlutá, černá)
+   pro změnu barvy karoserie.
 
 5) Výzva k akci (CTA)
    Nadpis a tlačítka "Prohlédnout vozy" a "Rezervovat".

@@ -1,3 +1,4 @@
+// seznam vozidel: značka;model;rok;palivo;převodovka;výkon (kW);cena za den;kategorie
 const auta = `Škoda;Fabia;2022;Benzín;Manuální;81;890;Ekonomická
 Škoda;Scala;2023;Benzín;Manuální;85;990;Kompakt
 Škoda;Octavia;2022;Nafta;Automatická;110;1190;Kompakt
@@ -56,6 +57,7 @@ Bugatti;Chiron;2022;Benzín;Automatická;1103;24900;Sport`.split('\n').map(funct
   return { znacka: p[0], model: p[1], rok: +p[2], palivo: p[3], prevodovka: p[4], vykon: +p[5], cena: +p[6], kategorie: p[7] };
 });
 
+// české texty pro DataTables
 const cesky = {
   search: 'Hledat:', lengthMenu: 'Zobrazit _MENU_ záznamů',
   info: 'Zobrazeno _START_ až _END_ z _TOTAL_ záznamů', infoEmpty: 'Žádné záznamy',
@@ -63,6 +65,7 @@ const cesky = {
   paginate: { first: 'První', previous: 'Předchozí', next: 'Další', last: 'Poslední' }
 };
 
+// jednoduché obrázky aut podle kategorie (SVG)
 const siluety = {
   hatch: { telo: 'M30 82 L30 62 Q30 56 38 55 L76 52 L96 34 Q100 30 108 30 L176 30 Q186 30 192 36 L214 54 L260 58 Q272 60 272 70 L272 82 Z', okna: ['M97 37 L103 34 L137 34 L137 52 L82 52 Z', 'M143 34 L176 34 Q182 34 187 38 L205 52 L143 52 Z'], dvere: [[140, 34, 80]], klika: [150, 60], svetla: [60, 62] },
   suv: { telo: 'M28 84 L28 52 Q28 46 36 45 L70 44 L80 28 Q82 26 88 26 L190 26 Q198 26 202 31 L222 46 L262 50 Q274 52 274 62 L274 84 Z', okna: ['M85 30 L134 30 L134 45 L75 45 Z', 'M140 30 L188 30 Q192 30 195 33 L212 45 L140 45 Z'], dvere: [[137, 45, 80]], klika: [148, 56], svetla: [52, 52] },
@@ -90,6 +93,7 @@ function obrazekAuta(a) {
 
 function nazevAuta(a) { return a.znacka + ' ' + a.model; }
 
+// tabulka vozového parku, filtr kategorií a okno s detailem
 function tabulkaVozu() {
   if (!$('#tabulka').length) return;
   const tabulka = $('#tabulka').DataTable({
@@ -131,6 +135,7 @@ function tabulkaVozu() {
   });
 }
 
+// formulář rezervace: výběr vozu, výpočet ceny a validace
 function formularRezervace() {
   const f = document.getElementById('formular');
   if (!f) return;
@@ -181,6 +186,7 @@ function formularRezervace() {
   });
 }
 
+// 3D scéna: načtení modelu, otáčení auta a otevírání dveří podle scrollu
 function scena3D() {
   const platno = document.getElementById('platno');
   if (!platno || typeof THREE === 'undefined') return;
@@ -199,6 +205,7 @@ function scena3D() {
   cervenaSvetlo.position.set(-3, 2, -3);
   scena.add(cervenaSvetlo);
 
+  // záložní auto z jednoduchých tvarů (zobrazí se, když se model nenačte)
   const karoserie = new THREE.MeshStandardMaterial({ color: 0xe10600, flatShading: true, roughness: 0.35, metalness: 0.35 });
   const tmava = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, flatShading: true, roughness: 0.7 });
   const cerna = new THREE.MeshStandardMaterial({ color: 0x050505, flatShading: true, roughness: 0.9 });
@@ -320,6 +327,7 @@ function scena3D() {
     kamera.lookAt(0, 0.7, 0);
     kamera.updateProjectionMatrix();
   }
+  // postup scrollu uvnitř sekce (0 až 1)
   function postup() {
     const r = sekce.getBoundingClientRect();
     return Math.min(1, Math.max(0, -r.top / (r.height - window.innerHeight)));
@@ -407,6 +415,7 @@ function scena3D() {
     });
   }
 
+  // vykreslení jen při scrollu a když je scéna vidět
   let ceka = false;
   function vykresli() {
     ceka = false;
@@ -430,6 +439,7 @@ function scena3D() {
   pozadat();
 }
 
+// spuštění po načtení stránky
 $(function () {
   tabulkaVozu();
   formularRezervace();
