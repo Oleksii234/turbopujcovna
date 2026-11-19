@@ -124,7 +124,7 @@ function tabulkaVozu() {
     tabulka.order([parseInt(p[0]), p[1]]).draw();
   });
   function vykreslitKarty() {
-    const html = tabulka.rows({ page: 'current' }).indexes().toArray().map(function (i) {
+    const html = tabulka.rows({ search: 'applied', order: 'applied' }).indexes().toArray().map(function (i) {
       const a = auta[i];
       return '<div class="karta-vozu"><div class="d-flex justify-content-between align-items-start gap-2"><h3>' + nazevAuta(a) + '</h3><div class="cena-karta">' + a.cena.toLocaleString('cs-CZ') + ' Kč<small class="text-secondary fs-6 fw-normal"> /den</small></div></div>' +
         '<div class="parametry"><span>' + a.rok + '</span><span>' + a.palivo + '</span><span>' + a.prevodovka + '</span><span>' + a.vykon + ' kW</span><span>' + a.kategorie + '</span></div>' +
