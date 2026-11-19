@@ -159,14 +159,19 @@ function formularRezervace() {
     }
     const auto = auta[f.vozidlo.value];
     const dny = Math.max(1, Math.round((new Date(doData) - new Date(od)) / 86400000));
-    const sleva = dny >= 7 ? 0.15 : dny >= 3 ? 0.07 : 0;
-    const zaAuto = Math.round(auto.cena * dny * (1 - sleva));
+    const sleva = dny >= 30 ? 0.25 : dny >= 7 ? 0.2 : dny >= 3 ? 0.07 : 0;
+    let vikend = 0;
+    for (let i = 0; i < dny; i++) {
+      const den = new Date(new Date(od).getTime() + i * 86400000).getUTCDay();
+      if (den === 5 || den === 6 || den === 0) vikend++;
+    }
+    const zaAuto = Math.round(auto.cena * (dny + vikend * 0.1) * (1 - sleva));
     const pojisteni = f.pojisteni.value === 'plne' ? 250 : f.pojisteni.value === 'premium' ? 450 : 0;
     const doplnky = (f.gps.checked ? 100 : 0) + (f.sedacka.checked ? 80 : 0) + (f.ridic.checked ? 150 : 0);
     const celkem = zaAuto + (pojisteni + doplnky) * dny;
     const kc = function (c) { return c.toLocaleString('cs-CZ') + ' Kč'; };
     souhrn.html('<div class="row align-items-center"><div class="col-md-8 small text-secondary">' +
-      nazevAuta(auto) + ': ' + dny + ' dní × ' + kc(auto.cena) + (sleva ? ' (sleva ' + Math.round(sleva * 100) + ' %)' : '') + ' = ' + kc(zaAuto) +
+      nazevAuta(auto) + ': ' + dny + ' dní × ' + kc(auto.cena) + (vikend ? ' + víkendový příplatek 10 % (' + vikend + ' dní)' : '') + (sleva ? ', sleva ' + Math.round(sleva * 100) + ' %' : '') + ' = ' + kc(zaAuto) +
       '<br>Pojištění a doplňky: ' + kc((pojisteni + doplnky) * dny) + '</div>' +
       '<div class="col-md-4 text-md-end"><span class="text-secondary small">Předběžná cena</span><div class="cena-velka">' + kc(celkem) + '</div></div></div>');
   }
