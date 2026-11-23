@@ -69,3 +69,8 @@ a:focus-visible,button:focus-visible,.form-control:focus-visible,.form-select:fo
 /* mobil a omezený pohyb */
 @media(max-width:767px){.scena-vnejsi{height:250vh}.slide{min-height:60vh}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.karta:hover{transform:none}}
+
+/* přepínač jazyka CZ / UA */
+.jazyk-skupina .btn{min-width:42px;min-height:36px;font-weight:700}
+.jazyk-skupina .btn.active{background:var(--cervena);border-color:var(--cervena);color:#fff}
+@media(max-width:991px){.navbar>.container{flex-wrap:nowrap}.navbar-brand{margin-right:.5rem;font-size:1.05rem}.jazyk-skupina .btn{min-width:36px;padding:.2rem .45rem}.navbar-toggler{padding:.25rem .5rem}}

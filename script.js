@@ -65,6 +65,275 @@ const cesky = {
   paginate: { first: 'První', previous: 'Předchozí', next: 'Další', last: 'Poslední' }
 };
 
+// ---------- přepínání jazyka (čeština / ukrajinština) ----------
+// výchozí je čeština, zvolený jazyk se pamatuje v localStorage
+let jazyk = 'cs';
+try { jazyk = localStorage.getItem('jazyk') === 'uk' ? 'uk' : 'cs'; } catch (e) {}
+
+// slovník: český text -> ukrajinský překlad
+const slovnik = {
+ "Domů": "Головна",
+ "Vozový park": "Автопарк",
+ "Ceník": "Ціни",
+ "Rezervace": "Бронювання",
+ "O nás": "Про нас",
+ "Kontakt": "Контакти",
+ "Menu": "Меню",
+ "breadcrumb": "Навігаційний ланцюжок",
+ "Zavřít": "Закрити",
+ "Půjčovna sportovních a prémiových vozů v Ostravě. Školní projekt, vymyšlená firma.": "Прокат спортивних і преміальних авто в Остраві. Навчальний проєкт, вигадана компанія.",
+ "Odkazy": "Посилання",
+ "© 2026 TurboPujcovna – semestrální projekt, Ostravská univerzita": "© 2026 TurboPujcovna – семестровий проєкт, Остравський університет",
+ "3D model:": "3D-модель:",
+ "Rychlost, která uchvátí": "Швидкість, що захоплює",
+ "Sportovní vozy v Ostravě k dispozici ještě dnes.": "Спортивні авто в Остраві — уже сьогодні.",
+ "Rezervovat": "Забронювати",
+ "Více než 50 vozů": "Понад 50 авто",
+ "Od úsporných městských aut po supersporty a elektromobily.": "Від економних міських авто до суперкарів та електромобілів.",
+ "Pojištění v ceně": "Страхування включено",
+ "Žádné skryté poplatky. Jasné podmínky, férová cena.": "Жодних прихованих платежів. Зрозумілі умови, чесна ціна.",
+ "Podmínky": "Умови",
+ "Předchozí": "Попередній",
+ "Další": "Наступний",
+ "Naše služby": "Наші послуги",
+ "Krátkodobý pronájem": "Короткострокова оренда",
+ "Od jednoho dne. Vyberete si vůz a za pár minut máte rezervaci.": "Від однієї доби. Обираєте авто — і за кілька хвилин бронювання готове.",
+ "Dlouhodobý pronájem": "Довгострокова оренда",
+ "Měsíční tarify se slevou až 25 % pro firmy i jednotlivce.": "Місячні тарифи зі знижкою до 25 % для компаній і приватних осіб.",
+ "Sportovní vozy": "Спортивні авто",
+ "Golf R, M3, RS3, 911 i Bugatti Chiron – zážitek za volantem bez starostí s koupí.": "Golf R, M3, RS3, 911 і Bugatti Chiron — драйв за кермом без клопотів із купівлею.",
+ "Přistavení vozu": "Подача авто",
+ "Vůz přivezeme na vaši adresu v Ostravě a okolí.": "Привеземо авто на вашу адресу в Остраві та околицях.",
+ "Povinné ručení a základní havarijní pojištění je vždy v ceně.": "Обов’язкова цивільна відповідальність і базове КАСКО завжди входять у ціну.",
+ "Podpora 24/7": "Підтримка 24/7",
+ "Nonstop linka pro případ poruchy nebo nehody.": "Цілодобова лінія на випадок поломки чи аварії.",
+ "Více o nás": "Більше про нас",
+ "3D model vozu Bugatti Chiron": "3D-модель авто Bugatti Chiron",
+ "Prohlédněte si vůz": "Огляньте авто",
+ "Scrollujte – vůz se otáčí a otevírá dveře i kapotu.": "Прокручуйте — авто обертається, відчиняє двері й капот.",
+ "Načítám 3D model…": "Завантаження 3D-моделі…",
+ "Červená": "Червоний",
+ "Bílá": "Білий",
+ "Modrá": "Синій",
+ "Žlutá": "Жовтий",
+ "Černá": "Чорний",
+ "Slide 1": "Слайд 1",
+ "Slide 2": "Слайд 2",
+ "Slide 3": "Слайд 3",
+ "Vyberte si svůj vůz": "Оберіть своє авто",
+ "Prohlédnout vozy": "Переглянути авто",
+ "Ceník a podmínky": "Ціни та умови",
+ "Podmínky pronájmu": "Умови оренди",
+ "Pojištění": "Страхування",
+ "Ceny jsou orientační („od“), uvedené za 24 hodin včetně DPH 21 %. Čím déle si vůz půjčíte, tím méně platíte za den, při pronájmu na 30 dní a více až o 25 % méně.": "Ціни орієнтовні («від»), вказані за 24 години з ПДВ 21 %. Чим довше орендуєте авто, тим менше платите за добу; при оренді від 30 днів — до 25 % дешевше.",
+ "Kategorie": "Категорія",
+ "1–2 dny": "1–2 дні",
+ "3–6 dnů": "3–6 днів",
+ "7 a více dnů": "7 і більше днів",
+ "Ekonomická": "Економ",
+ "Kompakt": "Компакт",
+ "Prémiová": "Преміум",
+ "Elektro": "Електро",
+ "Sport": "Спорт",
+ "Užitkový": "Комерційний",
+ "Přesnou cenu konkrétního vozu najdete ve": "Точну ціну конкретного авто дивіться в",
+ "vozovém parku": "автопарку",
+ ". Víkendový tarif (pátek 12:00 – pondělí 9:00) je o 10 % dražší.": ". Вихідний тариф (п’ятниця 12:00 – понеділок 9:00) дорожчий на 10 %.",
+ "Věk řidiče:": "Вік водія:",
+ "minimálně 21 let, u kategorie Sport 25 let.": "щонайменше 21 рік, для категорії «Спорт» — 25 років.",
+ "Řidičský průkaz:": "Посвідчення водія:",
+ "platný skupiny B, držený alespoň 2 roky.": "дійсне, категорії B, стаж щонайменше 2 роки.",
+ "Kauce:": "Застава:",
+ "5 000 Kč u ekonomické třídy až 30 000 Kč u sportovních vozů. Vrací se do 3 pracovních dnů po vrácení vozu bez poškození.": "від 5 000 Kč для економ-класу до 30 000 Kč для спортивних авто. Повертається протягом 3 робочих днів після повернення авто без пошкоджень.",
+ "Limit kilometrů:": "Ліміт кілометрів:",
+ "250 km na den, každý další kilometr 3 Kč. Elektromobily mají 300 km na den.": "250 км на добу, кожен наступний кілометр — 3 Kč. Електромобілі — 300 км на добу.",
+ "Palivo:": "Пальне:",
+ "vůz se vrací se stejným stavem nádrže nebo baterie, jako byl předán. Chybějící palivo účtujeme s poplatkem 300 Kč.": "авто повертається з тим самим рівнем пального чи заряду, що й при видачі. Нестачу пального стягуємо зі збором 300 Kč.",
+ "Zahraničí:": "За кордон:",
+ "cesty do zemí EU jsou povoleny po předchozím nahlášení, příplatek 300 Kč.": "поїздки до країн ЄС дозволені після попереднього повідомлення, доплата 300 Kč.",
+ "Storno:": "Скасування:",
+ "zdarma do 48 hodin před převzetím, poté 30 % ceny prvního dne.": "безкоштовно за 48 годин до отримання, пізніше — 30 % вартості першої доби.",
+ "Zákaz:": "Заборонено:",
+ "kouření ve vozidle, závodní jízdy a přepravy zvířat bez přepravky.": "куріння в авто, гонки та перевезення тварин без переноски.",
+ "Ke každému pronájmu patří povinné ručení s limitem 100 milionů Kč. Havarijní pojištění si můžete vybrat podle spoluúčasti.": "До кожної оренди входить обов’язкове страхування цивільної відповідальності з лімітом 100 мільйонів Kč. Страхування від ушкоджень (КАСКО) можна обрати за розміром франшизи.",
+ "Základní": "Базове",
+ "v ceně": "у вартості",
+ "Povinné ručení + havarijní pojištění se spoluúčastí 20 000 Kč.": "Обов’язкове страхування + КАСКО з франшизою 20 000 Kč.",
+ "Plné": "Повне",
+ "+ 250 Kč / den": "+ 250 Kč / добу",
+ "Spoluúčast 5 000 Kč, pojištění skel a pneumatik, asistenční služba.": "Франшиза 5 000 Kč, страхування скла й шин, асистанс.",
+ "Prémiové": "Преміум",
+ "+ 450 Kč / den": "+ 450 Kč / добу",
+ "Bez spoluúčasti, pojištění úrazu posádky, náhradní vůz při poruše.": "Без франшизи, страхування від нещасних випадків для екіпажу, заміна авто при поломці.",
+ "Pojištění se nevztahuje na škody způsobené pod vlivem alkoholu, při závodech nebo při porušení podmínek smlouvy.": "Страхування не покриває збитки, завдані в стані сп’яніння, під час гонок або при порушенні умов договору.",
+ "Po–Pá 8:00–18:00, So 9:00–14:00": "Пн–Пт 8:00–18:00, Сб 9:00–14:00",
+ "Napsat e-mail": "Написати листа",
+ "Zavolat": "Зателефонувати",
+ "Mimo otevírací dobu je k dispozici nonstop linka pro zákazníky s platnou rezervací.": "Поза робочим часом для клієнтів із чинним бронюванням працює цілодобова лінія.",
+ "Zde bude mapa": "Тут буде карта",
+ "TurboPujcovna vznikla v Ostravě s jednoduchým nápadem: každý by si měl alespoň jednou vyzkoušet vůz, o kterém jinak jen sní.": "TurboPujcovna виникла в Остраві з простої ідеї: кожен має хоча б раз спробувати авто, про яке інакше лише мріє.",
+ "Začínali jsme se třemi auty v garáži na Stodolní. Dnes nabízíme více než 50 vozů – od úsporných městských modelů po sportovní kupé a elektromobily. Každý vůz prochází servisní prohlídkou před každým pronájmem a je kompletně vyčištěný.": "Ми починали з трьох авто в гаражі на Stodolní. Сьогодні пропонуємо понад 50 авто — від економних міських моделей до спортивних купе та електромобілів. Кожне авто перед кожною орендою проходить сервісний огляд і повністю вичищене.",
+ "Dbáme na transparentní ceny bez skrytých poplatků. Pojištění je vždy v ceně a naše podpora je k dispozici nonstop.": "Ми дбаємо про прозорі ціни без прихованих платежів. Страхування завжди входить у вартість, а підтримка доступна цілодобово.",
+ "Napište nám": "Напишіть нам",
+ "Naše vozy": "Наші авто",
+ "vozů": "авто",
+ "let": "років",
+ "podpora": "підтримка",
+ "Časté dotazy": "Поширені запитання",
+ "Jak starý musím být, abych si mohl půjčit auto?": "Скільки мені має бути років, щоб орендувати авто?",
+ "Minimálně 21 let a řidičský průkaz skupiny B starší než 2 roky. U sportovních vozů je minimální věk 25 let.": "Щонайменше 21 рік і посвідчення водія категорії B, якому більше 2 років. Для спортивних авто мінімальний вік — 25 років.",
+ "Musím složit kauci?": "Чи потрібно вносити заставу?",
+ "Ano, kauce se pohybuje od 5 000 do 30 000 Kč podle kategorie vozu a vrací se do 3 pracovních dnů.": "Так, застава становить від 5 000 до 30 000 Kč залежно від категорії авто і повертається протягом 3 робочих днів.",
+ "Mohu vyjet do zahraničí?": "Чи можна виїжджати за кордон?",
+ "Cesty do zemí EU jsou možné po předchozím nahlášení za příplatek 300 Kč.": "Поїздки до країн ЄС можливі після попереднього повідомлення з доплатою 300 Kč.",
+ "Co když se auto porouchá?": "Що, якщо авто зламається?",
+ "Zavolejte na linku +420 555 123 456. Asistenci zajistíme nonstop a podle situace vám dodáme náhradní vůz.": "Зателефонуйте на лінію +420 555 123 456. Допомогу організуємо цілодобово і, залежно від ситуації, надамо заміну авто.",
+ "Jak mohu rezervaci zrušit?": "Як скасувати бронювання?",
+ "Zdarma do 48 hodin před převzetím. Poté účtujeme 30 % ceny prvního dne.": "Безкоштовно за 48 годин до отримання. Пізніше утримуємо 30 % вартості першої доби.",
+ "Rezervace vozu": "Бронювання авто",
+ "Jméno": "Ім’я",
+ "Zadejte jméno.": "Вкажіть ім’я.",
+ "Příjmení": "Прізвище",
+ "Zadejte příjmení.": "Вкажіть прізвище.",
+ "Zadejte platný e-mail.": "Вкажіть дійсну e-mail адресу.",
+ "Telefon": "Телефон",
+ "Zadejte 9místné telefonní číslo.": "Вкажіть 9-значний номер телефону.",
+ "Datum od": "Дата початку",
+ "Vyberte datum převzetí.": "Оберіть дату отримання.",
+ "Datum do": "Дата завершення",
+ "Vyberte datum vrácení (po datu od).": "Оберіть дату повернення (після дати початку).",
+ "Vozidlo": "Авто",
+ "Vyberte vůz…": "Оберіть авто…",
+ "Vyberte vozidlo.": "Оберіть авто.",
+ "Místo převzetí": "Місце отримання",
+ "Vyberte místo…": "Оберіть місце…",
+ "Ostrava – centrum (Stodolní 12)": "Острава – центр (Stodolní 12)",
+ "Ostrava – Hlavní nádraží": "Острава – головний вокзал",
+ "Ostrava – letiště Leoše Janáčka": "Острава – аеропорт Леоша Яначека",
+ "Ostrava – Poruba": "Острава – Поруба",
+ "Přistavení na adresu": "Подача за адресою",
+ "Vyberte místo převzetí.": "Оберіть місце отримання.",
+ "Základní (v ceně)": "Базове (включено)",
+ "Plné (+ 250 Kč/den)": "Повне (+ 250 Kč/добу)",
+ "Prémiové (+ 450 Kč/den)": "Преміум (+ 450 Kč/добу)",
+ "Vyberte pojištění.": "Оберіть страхування.",
+ "Doplňky": "Додатково",
+ "GPS navigace (+ 100 Kč/den)": "GPS-навігація (+ 100 Kč/добу)",
+ "Dětská sedačka (+ 80 Kč/den)": "Дитяче крісло (+ 80 Kč/добу)",
+ "Druhý řidič (+ 150 Kč/den)": "Другий водій (+ 150 Kč/добу)",
+ "Poznámka": "Примітка",
+ "Souhlasím s podmínkami pronájmu a zpracováním osobních údajů.": "Погоджуюсь з умовами оренди та обробкою персональних даних.",
+ "Pro odeslání je nutný souhlas.": "Для відправлення потрібна згода.",
+ "Uložit": "Зберегти",
+ "Značka": "Марка",
+ "Model": "Модель",
+ "Rok": "Рік",
+ "Palivo": "Пальне",
+ "Převodovka": "Коробка передач",
+ "Výkon": "Потужність",
+ "Cena za den": "Ціна за добу",
+ "Akce": "Дія",
+ "Benzín": "Бензин",
+ "Nafta": "Дизель",
+ "Hybrid": "Гібрид",
+ "Automatická": "Автомат",
+ "Manuální": "Механіка",
+ "Vše": "Усі",
+ "Detail": "Деталі",
+ "Rok výroby": "Рік випуску",
+ "kW": "кВт",
+ "Nic nenalezeno.": "Нічого не знайдено.",
+ "/den": "/добу",
+ "/ den": "/ добу",
+ "Kč/den": "Kč/добу",
+ "Řazení": "Сортування",
+ "Řadit: značka A–Z": "Сортувати: марка А–Я",
+ "Cena: od nejlevnějších": "Ціна: від найдешевших",
+ "Cena: od nejdražších": "Ціна: від найдорожчих",
+ "Výkon: nejsilnější": "Потужність: найпотужніші",
+ "Rok: nejnovější": "Рік: найновіші",
+ "Vyberte vozidlo a termín – zobrazí se předběžná cena.": "Оберіть авто та термін — з’явиться попередня вартість.",
+ "dní": "дн.",
+ "víkendový příplatek 10 %": "доплата за вихідні 10 %",
+ "sleva": "знижка",
+ "Pojištění a doplňky:": "Страхування та додатково:",
+ "Předběžná cena": "Попередня вартість",
+ "Datum do musí být po datu od.": "Дата завершення має бути після дати початку.",
+ ", vaše rezervace byla odeslána. Brzy se vám ozveme.": ", ваше бронювання відправлено. Ми скоро з вами зв’яжемося.",
+ "Ceník půjčovny TurboPujcovna Ostrava, podmínky pronájmu a pojištění vozidel.": "Ціни прокату TurboPujcovna Острава, умови оренди та страхування авто.",
+ "TurboPujcovna Ostrava: půjčovna sportovních a prémiových aut. Přes 50 vozidel, pojištění v ceně, online rezervace.": "TurboPujcovna Острава: прокат спортивних і преміальних авто. Понад 50 авто, страхування включено, онлайн-бронювання.",
+ "Kontakt na TurboPujcovna Ostrava: adresa, telefon, e-mail a otevírací doba.": "Контакти TurboPujcovna Острава: адреса, телефон, e-mail і години роботи.",
+ "O nás: půjčovna TurboPujcovna z Ostravy, naše hodnoty a časté dotazy zákazníků.": "Про нас: прокат TurboPujcovna з Острави, наші цінності та поширені запитання клієнтів.",
+ "Online rezervace sportovních a prémiových vozidel v Ostravě. Vyberte vůz, termín a pojištění.": "Онлайн-бронювання спортивних і преміальних авто в Остраві. Оберіть авто, термін і страхування.",
+ "Vozový park TurboPujcovna Ostrava: přes 50 vozidel od úsporných po supersporty. Filtr, řazení a detail každého vozu.": "Автопарк TurboPujcovna Острава: понад 50 авто — від економних до суперкарів. Фільтр, сортування та деталі кожного авто."
+};
+
+const ukrajinsky = {"search": "Пошук:", "lengthMenu": "Показати _MENU_ записів", "info": "Показано _START_–_END_ з _TOTAL_ записів", "infoEmpty": "Немає записів", "infoFiltered": "(відфільтровано з _MAX_ записів)", "zeroRecords": "Нічого не знайдено", "emptyTable": "Таблиця порожня", "paginate": {"first": "Перша", "previous": "Попередня", "next": "Наступна", "last": "Остання"}};
+
+// přeloží jeden text (v češtině ho nechá beze změny)
+function t(text) { return jazyk === 'uk' && slovnik[text] ? slovnik[text] : text; }
+function cislo(c) { return c.toLocaleString(jazyk === 'uk' ? 'uk-UA' : 'cs-CZ'); }
+
+const puvodniTexty = new WeakMap();
+let puvodniTitle = null, puvodniPopis = null;
+
+// projde stránku a vymění české texty za ukrajinské (nebo zpět)
+function prelozitStranku() {
+  document.documentElement.lang = jazyk;
+  const chodec = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const uzly = [];
+  while (chodec.nextNode()) uzly.push(chodec.currentNode);
+  uzly.forEach(function (u) {
+    const rodic = u.parentNode;
+    if (!rodic || rodic.closest('script, style, #tabulka tbody, #karty, #detailTelo, #souhrn, #uspech, #razeni, #filtr')) return;
+    if (rodic.closest('#vozidlo') && rodic.tagName === 'OPTION' && rodic.value !== '') return;
+    if (!puvodniTexty.has(u)) puvodniTexty.set(u, u.nodeValue);
+    const orig = puvodniTexty.get(u);
+    const klic = orig.replace(/\s+/g, ' ').trim();
+    if (!klic) return;
+    if (jazyk === 'uk' && slovnik[klic]) {
+      u.nodeValue = orig.match(/^\s*/)[0] + slovnik[klic] + orig.match(/\s*$/)[0];
+    } else {
+      u.nodeValue = orig;
+    }
+  });
+  $('[aria-label]').each(function () {
+    if (this.dataset.csAria === undefined) this.dataset.csAria = this.getAttribute('aria-label');
+    this.setAttribute('aria-label', t(this.dataset.csAria));
+  });
+  if (puvodniTitle === null) puvodniTitle = document.title;
+  document.title = puvodniTitle.split(' | ').map(t).join(' | ');
+  const popis = document.querySelector('meta[name="description"]');
+  if (popis) {
+    if (puvodniPopis === null) puvodniPopis = popis.content;
+    popis.content = t(puvodniPopis);
+  }
+}
+
+// tlačítka CZ / UA v navigaci (na mobilu vedle hamburgeru)
+function prepinacJazyka() {
+  const tlacitka = '<div class="btn-group btn-group-sm jazyk-skupina" role="group" aria-label="Jazyk / Мова">' +
+    '<button type="button" class="btn btn-outline-light" data-j="cs">CZ</button>' +
+    '<button type="button" class="btn btn-outline-light" data-j="uk">UA</button></div>';
+  $('.navbar-toggler').before('<div class="d-lg-none ms-auto me-2">' + tlacitka + '</div>');
+  $('.navbar-nav').append('<li class="nav-item d-none d-lg-flex align-items-center ms-lg-3">' + tlacitka + '</li>');
+  $(document).on('click', '.jazyk-skupina [data-j]', function () { nastavitJazyk($(this).data('j')); });
+  oznacitJazyk();
+}
+function oznacitJazyk() {
+  $('.jazyk-skupina [data-j]').each(function () {
+    $(this).toggleClass('active', $(this).data('j') === jazyk).attr('aria-pressed', $(this).data('j') === jazyk);
+  });
+}
+function nastavitJazyk(j) {
+  jazyk = j;
+  try { localStorage.setItem('jazyk', j); } catch (e) {}
+  oznacitJazyk();
+  tabulkaVozu();
+  if (typeof prekreslitFormular === 'function') prekreslitFormular();
+  prelozitStranku();
+}
+
 // jednoduché obrázky aut podle kategorie (SVG)
 const siluety = {
   hatch: { telo: 'M30 82 L30 62 Q30 56 38 55 L76 52 L96 34 Q100 30 108 30 L176 30 Q186 30 192 36 L214 54 L260 58 Q272 60 272 70 L272 82 Z', okna: ['M97 37 L103 34 L137 34 L137 52 L82 52 Z', 'M143 34 L176 34 Q182 34 187 38 L205 52 L143 52 Z'], dvere: [[140, 34, 80]], klika: [150, 60], svetla: [60, 62] },
@@ -96,29 +365,38 @@ function nazevAuta(a) { return a.znacka + ' ' + a.model; }
 // tabulka vozového parku, filtr kategorií a okno s detailem
 function tabulkaVozu() {
   if (!$('#tabulka').length) return;
+  // při změně jazyka se tabulka vytvoří znovu
+  if ($.fn.dataTable.isDataTable('#tabulka')) {
+    $('#tabulka').DataTable().destroy();
+    $('#tabulka tbody').empty();
+  }
+  $('#filtr').empty();
+  $('#razeni, #karty').remove();
+  $('#tabulka, #karty').off('click.detail');
   const tabulka = $('#tabulka').DataTable({
     data: auta.map(function (a) { return [a.znacka, a.model, a.rok, a.palivo, a.prevodovka, a.vykon, a.cena, a.kategorie, '']; }),
-    language: cesky,
+    language: jazyk === 'uk' ? ukrajinsky : cesky,
     pageLength: 10,
     columnDefs: [
-      { targets: 5, render: function (d, t) { return t === 'display' ? d + ' kW' : d; } },
-      { targets: 6, render: function (d, t) { return t === 'display' ? d.toLocaleString('cs-CZ') + ' Kč' : d; } },
-      { targets: 8, orderable: false, searchable: false, render: function (d, t, r, meta) {
-        return '<button class="btn btn-sm btn-outline-danger btn-detail" data-i="' + meta.row + '"><i class="bi bi-search"></i> Detail</button>';
+      { targets: [3, 4, 7], render: function (d, typ) { return typ === 'display' || typ === 'filter' ? t(d) : d; } },
+      { targets: 5, render: function (d, typ) { return typ === 'display' ? d + ' ' + t('kW') : d; } },
+      { targets: 6, render: function (d, typ) { return typ === 'display' ? cislo(d) + ' Kč' : d; } },
+      { targets: 8, orderable: false, searchable: false, render: function (d, typ, r, meta) {
+        return '<button class="btn btn-sm btn-outline-danger btn-detail" data-i="' + meta.row + '"><i class="bi bi-search"></i> ' + t('Detail') + '</button>';
       } }
     ]
   });
-  const okno = new bootstrap.Modal('#modalDetail');
+  const okno = bootstrap.Modal.getOrCreateInstance('#modalDetail');
   const kategorie = ['Vše'].concat(auta.map(function (a) { return a.kategorie; }).filter(function (k, i, p) { return p.indexOf(k) === i; }));
   kategorie.forEach(function (k, i) {
-    $('<button type="button" class="btn btn-sm btn-outline-danger"></button>').text(k).toggleClass('active', i === 0).on('click', function () {
+    $('<button type="button" class="btn btn-sm btn-outline-danger"></button>').text(t(k)).toggleClass('active', i === 0).on('click', function () {
       $('#filtr .btn').removeClass('active');
       $(this).addClass('active');
-      tabulka.column(7).search(k === 'Vše' ? '' : '^' + k + '$', true, false).draw();
+      tabulka.column(7).search(k === 'Vše' ? '' : '^' + t(k) + '$', true, false).draw();
     }).appendTo('#filtr');
   });
   // mobilní zobrazení: místo tabulky karty vozů + řazení
-  $('#filtr').after('<select id="razeni" class="form-select mb-3" aria-label="Řazení"><option value="0|asc">Řadit: značka A–Z</option><option value="6|asc">Cena: od nejlevnějších</option><option value="6|desc">Cena: od nejdražších</option><option value="5|desc">Výkon: nejsilnější</option><option value="2|desc">Rok: nejnovější</option></select><div id="karty"></div>');
+  $('#filtr').after('<select id="razeni" class="form-select mb-3" aria-label="' + t('Řazení') + '"><option value="0|asc">' + t('Řadit: značka A–Z') + '</option><option value="6|asc">' + t('Cena: od nejlevnějších') + '</option><option value="6|desc">' + t('Cena: od nejdražších') + '</option><option value="5|desc">' + t('Výkon: nejsilnější') + '</option><option value="2|desc">' + t('Rok: nejnovější') + '</option></select><div id="karty"></div>');
   $('#razeni').on('change', function () {
     const p = this.value.split('|');
     tabulka.order([parseInt(p[0]), p[1]]).draw();
@@ -126,40 +404,48 @@ function tabulkaVozu() {
   function vykreslitKarty() {
     const html = tabulka.rows({ search: 'applied', order: 'applied' }).indexes().toArray().map(function (i) {
       const a = auta[i];
-      return '<div class="karta-vozu"><div class="d-flex justify-content-between align-items-start gap-2"><h3>' + nazevAuta(a) + '</h3><div class="cena-karta">' + a.cena.toLocaleString('cs-CZ') + ' Kč<small class="text-secondary fs-6 fw-normal"> /den</small></div></div>' +
-        '<div class="parametry"><span>' + a.rok + '</span><span>' + a.palivo + '</span><span>' + a.prevodovka + '</span><span>' + a.vykon + ' kW</span><span>' + a.kategorie + '</span></div>' +
-        '<button class="btn btn-outline-danger w-100 btn-detail" data-i="' + i + '"><i class="bi bi-search"></i> Detail</button></div>';
+      return '<div class="karta-vozu"><div class="d-flex justify-content-between align-items-start gap-2"><h3>' + nazevAuta(a) + '</h3><div class="cena-karta">' + cislo(a.cena) + ' Kč<small class="text-secondary fs-6 fw-normal"> ' + t('/den') + '</small></div></div>' +
+        '<div class="parametry"><span>' + a.rok + '</span><span>' + t(a.palivo) + '</span><span>' + t(a.prevodovka) + '</span><span>' + a.vykon + ' ' + t('kW') + '</span><span>' + t(a.kategorie) + '</span></div>' +
+        '<button class="btn btn-outline-danger w-100 btn-detail" data-i="' + i + '"><i class="bi bi-search"></i> ' + t('Detail') + '</button></div>';
     }).join('');
-    $('#karty').html(html || '<p class="text-secondary">Nic nenalezeno.</p>');
+    $('#karty').html(html || '<p class="text-secondary">' + t('Nic nenalezeno.') + '</p>');
   }
   tabulka.on('draw', vykreslitKarty);
   vykreslitKarty();
-  $('#tabulka, #karty').on('click', '.btn-detail', function () {
+  $('#tabulka, #karty').on('click.detail', '.btn-detail', function () {
     const i = $(this).data('i');
     const a = auta[i];
     $('#detailNazev').text(nazevAuta(a));
     $('#detailTelo').html(
       obrazekAuta(a) +
       '<dl class="row mb-3">' +
-      '<dt class="col-5">Rok výroby</dt><dd class="col-7">' + a.rok + '</dd>' +
-      '<dt class="col-5">Palivo</dt><dd class="col-7">' + a.palivo + '</dd>' +
-      '<dt class="col-5">Převodovka</dt><dd class="col-7">' + a.prevodovka + '</dd>' +
-      '<dt class="col-5">Výkon</dt><dd class="col-7">' + a.vykon + ' kW</dd>' +
-      '<dt class="col-5">Kategorie</dt><dd class="col-7">' + a.kategorie + '</dd></dl>' +
-      '<div class="cena-velka">' + a.cena.toLocaleString('cs-CZ') + ' Kč <small class="fs-6 text-secondary">/ den</small></div>');
+      '<dt class="col-5">' + t('Rok výroby') + '</dt><dd class="col-7">' + a.rok + '</dd>' +
+      '<dt class="col-5">' + t('Palivo') + '</dt><dd class="col-7">' + t(a.palivo) + '</dd>' +
+      '<dt class="col-5">' + t('Převodovka') + '</dt><dd class="col-7">' + t(a.prevodovka) + '</dd>' +
+      '<dt class="col-5">' + t('Výkon') + '</dt><dd class="col-7">' + a.vykon + ' ' + t('kW') + '</dd>' +
+      '<dt class="col-5">' + t('Kategorie') + '</dt><dd class="col-7">' + t(a.kategorie) + '</dd></dl>' +
+      '<div class="cena-velka">' + cislo(a.cena) + ' Kč <small class="fs-6 text-secondary">' + t('/ den') + '</small></div>');
     $('#detailRezervovat').attr('href', 'rezervace.html?auto=' + i);
     okno.show();
   });
 }
 
 // formulář rezervace: výběr vozu, výpočet ceny a validace
+let prekreslitFormular;
 function formularRezervace() {
   const f = document.getElementById('formular');
   if (!f) return;
   const vyber = $('#vozidlo');
   auta.forEach(function (a, i) {
-    vyber.append($('<option>').val(i).text(nazevAuta(a) + ' – ' + a.cena + ' Kč/den'));
+    vyber.append($('<option>').val(i));
   });
+  prekreslitFormular = function () {
+    vyber.find('option').each(function () {
+      if (this.value !== '') $(this).text(nazevAuta(auta[this.value]) + ' – ' + auta[this.value].cena + ' ' + t('Kč/den'));
+    });
+    spocitatCenu();
+  };
+  prekreslitFormular();
   const predvolene = new URLSearchParams(location.search).get('auto');
   if (predvolene !== null) vyber.val(predvolene);
   const dnes = new Date().toISOString().split('T')[0];
@@ -171,7 +457,7 @@ function formularRezervace() {
     const souhrn = $('#souhrn');
     const od = f.datumOd.value, doData = f.datumDo.value;
     if (f.vozidlo.value === '' || !od || !doData || doData < od) {
-      souhrn.html('<span class="text-secondary"><i class="bi bi-calculator"></i> Vyberte vozidlo a termín – zobrazí se předběžná cena.</span>');
+      souhrn.html('<span class="text-secondary"><i class="bi bi-calculator"></i> ' + t('Vyberte vozidlo a termín – zobrazí se předběžná cena.') + '</span>');
       return;
     }
     const auto = auta[f.vozidlo.value];
@@ -186,24 +472,24 @@ function formularRezervace() {
     const pojisteni = f.pojisteni.value === 'plne' ? 250 : f.pojisteni.value === 'premium' ? 450 : 0;
     const doplnky = (f.gps.checked ? 100 : 0) + (f.sedacka.checked ? 80 : 0) + (f.ridic.checked ? 150 : 0);
     const celkem = zaAuto + (pojisteni + doplnky) * dny;
-    const kc = function (c) { return c.toLocaleString('cs-CZ') + ' Kč'; };
+    const kc = function (c) { return cislo(c) + ' Kč'; };
     souhrn.html('<div class="row align-items-center"><div class="col-md-8 small text-secondary">' +
-      nazevAuta(auto) + ': ' + dny + ' dní × ' + kc(auto.cena) + (vikend ? ' + víkendový příplatek 10 % (' + vikend + ' dní)' : '') + (sleva ? ', sleva ' + Math.round(sleva * 100) + ' %' : '') + ' = ' + kc(zaAuto) +
-      '<br>Pojištění a doplňky: ' + kc((pojisteni + doplnky) * dny) + '</div>' +
-      '<div class="col-md-4 text-md-end"><span class="text-secondary small">Předběžná cena</span><div class="cena-velka">' + kc(celkem) + '</div></div></div>');
+      nazevAuta(auto) + ': ' + dny + ' ' + t('dní') + ' × ' + kc(auto.cena) + (vikend ? ' + ' + t('víkendový příplatek 10 %') + ' (' + vikend + ' ' + t('dní') + ')' : '') + (sleva ? ', ' + t('sleva') + ' ' + Math.round(sleva * 100) + ' %' : '') + ' = ' + kc(zaAuto) +
+      '<br>' + t('Pojištění a doplňky:') + ' ' + kc((pojisteni + doplnky) * dny) + '</div>' +
+      '<div class="col-md-4 text-md-end"><span class="text-secondary small">' + t('Předběžná cena') + '</span><div class="cena-velka">' + kc(celkem) + '</div></div></div>');
   }
   $(f).on('input change', spocitatCenu);
   spocitatCenu();
   f.addEventListener('submit', function (e) {
     e.preventDefault();
-    f.datumDo.setCustomValidity(f.datumOd.value && f.datumDo.value && f.datumDo.value < f.datumOd.value ? 'Datum do musí být po datu od.' : '');
+    f.datumDo.setCustomValidity(f.datumOd.value && f.datumDo.value && f.datumDo.value < f.datumOd.value ? t('Datum do musí být po datu od.') : '');
     f.classList.add('was-validated');
     if (!f.checkValidity()) return;
     const jmeno = f.jmeno.value;
     f.reset();
     f.classList.remove('was-validated');
     spocitatCenu();
-    $('#uspech').removeClass('d-none').find('span').text(jmeno + ', vaše rezervace byla odeslána. Brzy se vám ozveme.');
+    $('#uspech').removeClass('d-none').find('span').text(jmeno + t(', vaše rezervace byla odeslána. Brzy se vám ozveme.'));
     document.getElementById('uspech').scrollIntoView({ behavior: 'smooth' });
   });
 }
@@ -428,7 +714,7 @@ function scena3D() {
       $('#nacitani').remove();
       pozadat();
     }, function (e) {
-      if (e.lengthComputable) $('#nacitaniText').text('Načítám 3D model… ' + Math.round(e.loaded / e.total * 100) + ' %');
+      if (e.lengthComputable) $('#nacitaniText').text(t('Načítám 3D model…') + ' ' + Math.round(e.loaded / e.total * 100) + ' %');
     }, function () {
       $('#nacitani').remove();
       auto.visible = true;
@@ -463,7 +749,9 @@ function scena3D() {
 
 // spuštění po načtení stránky
 $(function () {
+  prepinacJazyka();
   tabulkaVozu();
   formularRezervace();
+  prelozitStranku();
   scena3D();
 });

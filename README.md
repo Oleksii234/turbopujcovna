@@ -18,3 +18,5 @@ Bootstrap 5.3, Bootstrap Icons, jQuery, DataTables, Three.js (CDN).
 ## Autor a zdroje
 - Autor: Oleksii Baidala
 - 3D model: Bugatti Chiron Super sports 300+ – MdMahib, CC BY (Sketchfab)
+
+Přepínač jazyka: tlačítka CZ / UA v navigaci (čeština a ukrajinština, volba se pamatuje v prohlížeči).
